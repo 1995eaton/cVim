@@ -1,0 +1,50 @@
+{
+  "manifest_version": 2,
+  "name": "new-cVim",
+  "version": "1.0",
+  "description": "An extension adding Vim-like bindings to Google Chrome",
+  "author": "Jake Eaton",
+  "commands": {
+    "reload-runtime": {
+      "description": "restart cVim's background scripts"
+    }
+  },
+  "permissions": [
+    "<all_urls>",
+    "tabs",
+    "history",
+    "bookmarks",
+    "storage",
+    "sessions",
+    "downloads",
+    "topSites",
+    "downloads.shelf",
+    "clipboardRead",
+    "clipboardWrite",
+    "webNavigation"
+  ],
+  "background": {
+    "persistant": false,
+    "scripts": [
+      "shared_scripts/utils.js",
+      "background_scripts/action_handler.js",
+      "background_scripts/keyboard_handler.js",
+      "background_scripts/runtime.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "shared_scripts/utils.js",
+        "content_scripts/scroll.js",
+        "content_scripts/action_handler.js",
+        "content_scripts/messenger.js",
+        "content_scripts/keyboard.js"
+      ],
+      "css": [],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ]
+}
