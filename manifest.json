@@ -27,6 +27,7 @@
     "persistant": false,
     "scripts": [
       "shared_scripts/utils.js",
+      "shared_scripts/dom.js",
       "background_scripts/action_handler.js",
       "background_scripts/keyboard_handler.js",
       "background_scripts/runtime.js"
@@ -37,12 +38,15 @@
       "matches": ["<all_urls>"],
       "js": [
         "shared_scripts/utils.js",
+        "shared_scripts/dom.js",
         "content_scripts/scroll.js",
+        "content_scripts/hints.js",
         "content_scripts/action_handler.js",
         "content_scripts/messenger.js",
-        "content_scripts/keyboard.js"
+        "content_scripts/keyboard.js",
+        "content_scripts/mode.js"
       ],
-      "css": [],
+      "css": ["content_scripts/css/hints.css"],
       "run_at": "document_start",
       "all_frames": true
     }

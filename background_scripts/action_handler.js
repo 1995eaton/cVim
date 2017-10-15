@@ -7,16 +7,6 @@ ActionHandler = {
     }
 };
 
-const promisify = (method, context) => {
-    return (...args) => {
-        return new Promise(resolve => {
-            method.call(context, ...args, (...args) => {
-                resolve(...args);
-            });
-        });
-    };
-};
-
 (() => {
     window.C = (function recurse(obj, context) {
         let result = {};

@@ -1,5 +1,6 @@
 let Routes = {
     Scroll,
+    Hints,
 };
 
 ActionHandler = {

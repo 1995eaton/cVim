@@ -18,11 +18,8 @@ const bindings = {
     'u': 'Scroll.pageUp',
     'gg': 'Scroll.top',
     'G': 'Scroll.bottom',
-};
 
-KeyboardHandler = {
+    'f': 'Hints.showHints',
 
-    parse(keys, port) {
-        log(keys, port);
-    }
+    '<C-[>': 'Mode.exitMode',
 };

@@ -40,7 +40,6 @@ class ConnectionHandler {
 let connection = new ConnectionHandler();
 
 const Routes = {
-    KeyboardHandler,
     ActionHandler,
 };
 

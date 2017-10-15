@@ -247,7 +247,21 @@ const normalListener = (key, event) => {
 };
 
 const listener = new KeyboardListener((key, event) => {
-    normalListener.call(this, key, event);
+    if (bindingTrie.has([key])) {
+        let action = bindings[key];
+        if (action === 'Mode.exitMode') {
+            event.stopPropagation();
+            return Mode.exitMode();
+        }
+    }
+    switch (Mode.mode) {
+    case 'normal':
+        normalListener.call(this, key, event);
+        break;
+    case 'hint':
+        Mode.callListener('hint', key, event);
+        break;
+    }
 });
 
 listener.activate();

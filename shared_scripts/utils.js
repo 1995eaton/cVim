@@ -20,6 +20,16 @@ _has = (obj, prop) => {
     return Object.prototype.hasOwnProperty.call(obj, prop);
 };
 
+promisify = (method, context) => {
+    return (...args) => {
+        return new Promise(resolve => {
+            method.call(context, ...args, (...args) => {
+                resolve(...args);
+            });
+        });
+    };
+};
+
 class PortMessenger {
     constructor(port) {
         this.hasListener = false;
