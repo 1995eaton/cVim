@@ -166,6 +166,7 @@ let Hints = {
         }
         Mode.enterMode('hint');
         let hintContainer = this.createHintContainer();
+        hintContainer.style.zIndex = '2147483647';
         document.body.appendChild(hintContainer);
         let hints = this.getHints();
         hints.forEach(hint => {

@@ -69,13 +69,11 @@ chrome.extension.onConnect.addListener(port => {
     messenger.onMessage((message, callback) => {
         let {route, ...data} = message;
         let [type, name] = route.split('.');
-        if (!_has(Routes, type) && callback) {
-            callback(message);
-            return;
-        }
+        if (!_has(Routes, type))
+            throw Error(`Route not found: ${route}`);
         let result = Routes[type][name](messenger, ..._vals(data));
-        if (result)
-            callback(result);
+        if (callback)
+            callback(result || null);
     });
 
     port.onDisconnect.addListener(() => {

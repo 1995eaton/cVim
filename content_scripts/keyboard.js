@@ -211,7 +211,6 @@ let sequence = [];
 let repeats = '';
 
 const normalListener = (key, event) => {
-    log(VimKeys.fromEvent(event));
     if (Dom.isEditable(document.activeElement))
         return;
     if (/[0-9]/.test(key)) {
@@ -229,17 +228,11 @@ const normalListener = (key, event) => {
         event.preventDefault();
         if (bindingTrie.has(sequence)) {
             let action = bindings[sequence.join('')];
-            log(sequence.join(''), action);
-            BG(action, { repeats: +repeats || 1 }, ActionHandler.execute);
+            log(`"${sequence.join('')}": ${action}`);
+            ActionHandler.execute(action, repeats);
             sequence = [];
             repeats = '';
         }
-    }
-
-    switch (event.key) {
-    case '!':
-        BG('KeyboardHandler.parse', {value: event.key});
-        break;
     }
 };
 
