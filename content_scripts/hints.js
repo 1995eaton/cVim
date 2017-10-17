@@ -15,16 +15,16 @@ let Hints = {
                 return true;
             }
 
-
             switch (true) {
             case node.hasAttribute('contenteditable'):
             case node.hasAttribute('tabindex'):
             case node.hasAttribute('onclick'):
+            case node.hasAttribute('aria-haspopup'):
+            case node.hasAttribute('data-cmd'):
+            case node.hasAttribute('jsaction'):
+            case node.hasAttribute('data-ga-click'):
+            case node.hasAttribute('aria-selected'):
                 return true;
-            // case node.hasAttribute('aria-haspopup'):
-            // case node.hasAttribute('data-cmd'):
-            // case node.hasAttribute('jsaction'):
-            //     return Hints.WEAK_LINK_TYPE;
             }
         });
         return elems;
@@ -123,9 +123,31 @@ let Hints = {
         this.hintContainer.remove();
         this.hintCharacters = undefined;
     },
+
+    openHint(hint) {
+        let {link} = hint;
+        let name = link.localName;
+        if (Dom.isEditable(link)) {
+            switch (name) {
+            case 'select':
+                link.focus();
+                Dom.mouseEvent('click', link);
+                return;
+            }
+            link.focus();
+            return;
+        }
+        Dom.mouseEvent('click', link);
+    },
+
     listener(key, event) {
+        if (['Control', 'Alt', 'Meta', 'Shift'].includes(event.key)) {
+            event.stopPropagation();
+            return;
+        }
         event.stopPropagation();
         event.preventDefault();
+
         let remove = [];
         let picked = null;
         Hints.hints.forEach((hint, index) => {
@@ -146,13 +168,12 @@ let Hints = {
         });
         if (picked) {
             Mode.exitMode();
-            log(picked);
+            Hints.openHint(picked);
             return;
         }
         if (Hints.hints.length === 0) {
             Mode.exitMode();
         }
-        log(key, event);
     },
 
     showHints() {
@@ -167,7 +188,7 @@ let Hints = {
         Mode.enterMode('hint');
         let hintContainer = this.createHintContainer();
         hintContainer.style.zIndex = '2147483647';
-        document.body.appendChild(hintContainer);
+        document.lastChild.appendChild(hintContainer);
         let hints = this.getHints();
         hints.forEach(hint => {
             hintContainer.appendChild(hint.hintElem);

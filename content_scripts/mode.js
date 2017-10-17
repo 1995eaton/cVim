@@ -18,10 +18,12 @@ let Mode = {
         if (this.mode !== 'normal') {
             if (!this.modeObjects[this.mode].exitMode())
                 this.mode = 'normal';
+        } else {
+            document.activeElement.blur();
         }
     },
 
-    callListener(mode, key, event) {
-        this.modeObjects[mode].listener.call(event, key, event);
+    callListener(mode, key, event, caller) {
+        this.modeObjects[mode].listener.call(caller, key, event);
     },
 };

@@ -3,6 +3,12 @@
 }
 
 .cvim-hint {
+  font-family: Helvetica, Helvetica Neue, Neue, sans-serif, monospace, Arial;
+  font-size: 10pt !important;
+  -webkit-font-smoothing: antialiased !important;
+
   background-color: yellow;
+  padding: 2px;
+  border-radius: 2px;
   color: black;
 }

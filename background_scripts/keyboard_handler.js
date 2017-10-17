@@ -27,4 +27,5 @@ const bindings = {
     'f': 'Hints.showHints',
 
     '<C-[>': 'Mode.exitMode',
+    '<Esc>': 'Mode.exitMode',
 };

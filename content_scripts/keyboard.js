@@ -88,8 +88,20 @@ const VimKeys = {
         return this.fromEvent(this.toEvent(key));
     },
 
-    parseVimSequence(seq) {
-        seq = seq.match(/(?:<([CAMS]-)*([a-z]+[0-9]+|[^a-z])>)|./gi);
+    parseVimSequence(str) {
+        let seq = [];
+        while (str.length) {
+            let match = str.match(/^<([CAMS]-)*[^>]+(>|[a-z])?>/i);
+            if (match && match.index === 0) {
+                seq.push(str.slice(0, match[0].length));
+                str = str.slice(match[0].length);
+            } else {
+                seq.push(str[0]);
+                str = str.slice(1);
+            }
+        }
+        // TODO: fix this
+        // seq = seq.match(/(?:<([CAMS]-)*([a-z]+[0-9]+|[^a-z])>)|./gi);
         return seq.map(key => this.normalize(key));
     },
 
@@ -120,7 +132,7 @@ class KeyboardListener {
 
     onKeyDown(event) {
         if (['Control', 'Alt', 'Meta', 'Shift'].includes(event.key))
-            return null;
+            return event.key;
         return VimKeys.fromEvent(event);
     }
 
@@ -213,6 +225,7 @@ let repeats = '';
 const normalListener = (key, event) => {
     if (Dom.isEditable(document.activeElement))
         return;
+
     if (/[0-9]/.test(key)) {
         if (repeats.length || key !== '0')
             repeats += key;
@@ -224,9 +237,9 @@ const normalListener = (key, event) => {
         sequence = [];
         repeats = '';
     } else {
-        event.stopPropagation();
-        event.preventDefault();
         if (bindingTrie.has(sequence)) {
+            event.stopPropagation();
+            event.preventDefault();
             let action = bindings[sequence.join('')];
             log(`"${sequence.join('')}": ${action}`);
             ActionHandler.execute(action, +repeats || 1);
@@ -241,15 +254,17 @@ const listener = new KeyboardListener((key, event) => {
         let action = bindings[key];
         if (action === 'Mode.exitMode') {
             event.stopPropagation();
+            event.preventDefault();
             return Mode.exitMode();
         }
     }
+
     switch (Mode.mode) {
     case 'normal':
         normalListener.call(this, key, event);
         break;
     case 'hint':
-        Mode.callListener('hint', key, event);
+        Mode.callListener('hint', key, event, this);
         break;
     }
 });

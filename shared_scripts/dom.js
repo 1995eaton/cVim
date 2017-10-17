@@ -46,6 +46,8 @@ const Dom = {
                 style.display === 'none') {
             return null;
         }
+        if (node.getAttribute('aria-hidden') === 'true')
+            return null;
 
         var rects = node.getClientRects();
         if (rects.length === 0)
@@ -108,5 +110,20 @@ const Dom = {
         else
             _props(style).forEach(key => elem.style[key] = style[key]);
         return elem;
+    },
+
+    mouseEvent: function(type, element) {
+        var events;
+        switch (type) {
+        case 'hover': events = ['mouseover', 'mouseenter']; break;
+        case 'unhover': events = ['mouseout', 'mouseleave']; break;
+        case 'click': events = ['mouseover', 'mousedown', 'mouseup', 'click']; break;
+        }
+        events.forEach(function(eventName) {
+            var event = document.createEvent('MouseEvents');
+            event.initMouseEvent(eventName, true, true, window, 1, 0, 0, 0, 0, false,
+                false, false, false, 0, null);
+            element.dispatchEvent(event);
+        });
     }
 };
