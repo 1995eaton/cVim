@@ -229,7 +229,7 @@ const normalListener = (key, event) => {
         if (bindingTrie.has(sequence)) {
             let action = bindings[sequence.join('')];
             log(`"${sequence.join('')}": ${action}`);
-            ActionHandler.execute(action, repeats);
+            ActionHandler.execute(action, +repeats || 1);
             sequence = [];
             repeats = '';
         }
