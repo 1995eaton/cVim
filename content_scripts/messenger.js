@@ -6,10 +6,14 @@ port.onDisconnect.addListener(() => {
 
 let messenger = new PortMessenger(port);
 
-messenger.onMessage((message) => {
+let settings = {};
+
+messenger.onMessage(message => {
     switch (message.name) {
-    case 'bindings':
-        addBindings(message.bindings);
+    case 'settings':
+        settings = message.settings;
+        addBindings(settings.bindings);
+        listener.activate();
         break;
     }
 });

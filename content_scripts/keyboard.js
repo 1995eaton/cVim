@@ -268,5 +268,3 @@ const listener = new KeyboardListener((key, event) => {
         break;
     }
 });
-
-listener.activate();

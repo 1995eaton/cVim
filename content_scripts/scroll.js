@@ -1,12 +1,4 @@
-let settings = {
-    scrollstep: 60,
-    fullpagescrollpercent: 80,
-    scrollduration: 60,
-    smoothscroll: false,
-};
-
-let Scroll = {
-};
+let Scroll = {};
 ['down', 'up', 'left', 'right', 'pageDown', 'pageUp', 'top', 'bottom'].forEach(type => {
     Scroll[type] = repeats => Scroll.scroll(type, repeats);
 });

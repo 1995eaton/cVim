@@ -92,7 +92,7 @@ chrome.runtime.onInstalled.addListener(details => {
 chrome.extension.onConnect.addListener(port => {
     let messenger = new PortMessenger(port);
     connection.add(port, messenger);
-    FG(messenger, 'bindings', {bindings});
+    Settings.send();
 
     messenger.onMessage((message, callback) => {
         let {route, ...data} = message;

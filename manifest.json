@@ -33,7 +33,6 @@
 
       "background_scripts/tabs.js",
 
-      "background_scripts/keyboard_handler.js",
       "background_scripts/runtime.js"
     ]
   },
