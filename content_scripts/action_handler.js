@@ -4,11 +4,10 @@ let Routes = {
 };
 
 ActionHandler = {
-    execute({action, repeats}) {
-        let [type, name] = action.split('.');
+    execute({route, repeats}) {
+        let [type, name] = route.split('.');
         if (!_has(Routes, type))
-            throw Error(`Action type does not exist: ${type}`);
-        // log(Routes[type][name], name);
+            throw Error(`Route does not exist: ${type}`);
         Routes[type][name](repeats);
     }
 };

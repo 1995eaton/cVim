@@ -55,7 +55,7 @@ let scrollingElement = (function() {
         lastActiveElem = event.srcElement;
     });
 
-    return function scrollingElement(dir, x, y) {
+    return function scrollingElement(dir) {
         let elem;
         if (clickFocus) {
             elem = lastActiveElem;

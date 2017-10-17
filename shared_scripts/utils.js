@@ -11,6 +11,10 @@ _props = obj => {
     return Object.getOwnPropertyNames(obj);
 };
 
+_vals = obj => {
+    return _props(obj).map(k => obj[k]);
+};
+
 _items = obj => {
     const props = _props(obj);
     return props.map(k => [k, obj[k]]);

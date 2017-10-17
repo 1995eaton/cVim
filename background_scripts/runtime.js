@@ -1,3 +1,20 @@
+(() => {
+    window.C = (function recurse(obj, context) {
+        let result = {};
+        for (let prop of _props(obj)) {
+            if (obj === chrome && prop === 'clipboard')
+                continue;
+            let value = obj[prop];
+            if (typeof value === 'object') {
+                result[prop] = recurse(value, obj);
+            } else if (typeof value === 'function') {
+                result[prop] = promisify(value, context);
+            }
+        }
+        return result;
+    })(chrome, null);
+})();
+
 FG = (messenger, name, data, callback) => {
     messenger.postMessage({name, ...data}, callback);
 };
@@ -40,7 +57,8 @@ class ConnectionHandler {
 let connection = new ConnectionHandler();
 
 const Routes = {
-    ActionHandler,
+    Tabs,
+    Settings,
 };
 
 chrome.extension.onConnect.addListener(port => {
@@ -51,9 +69,13 @@ chrome.extension.onConnect.addListener(port => {
     messenger.onMessage((message, callback) => {
         let {route, ...data} = message;
         let [type, name] = route.split('.');
-        let result = Routes[type][name](data, messenger);
-        if (callback && result !== undefined)
-            callback(result === undefined ? null : result);
+        if (!_has(Routes, type) && callback) {
+            callback(message);
+            return;
+        }
+        let result = Routes[type][name](messenger, ..._vals(data));
+        if (result)
+            callback(result);
     });
 
     port.onDisconnect.addListener(() => {

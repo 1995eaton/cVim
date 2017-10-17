@@ -1,11 +1,11 @@
 const bindings = {
-    'gt': 'nextTab',
-    'gT': 'previousTab',
-    'K': 'nextTab',
-    'J': 'previousTab',
-    'qq': 'closeTab',
-    '>': 'moveTabRight',
-    '<': 'moveTabLeft',
+    'gt': 'Tabs.nextTab',
+    'gT': 'Tabs.previousTab',
+    'K': 'Tabs.nextTab',
+    'J': 'Tabs.previousTab',
+    'qq': 'Tabs.closeTab',
+    '>': 'Tabs.moveTabRight',
+    '<': 'Tabs.moveTabLeft',
 
     'j': 'Scroll.down',
     's': 'Scroll.down',

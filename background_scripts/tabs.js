@@ -1,29 +1,3 @@
-ActionHandler = {
-    execute({action, repeats}, conn) {
-        if (!_has(this.actions, action)) {
-            return {action, repeats};
-        }
-        this.actions[action](conn, repeats);
-    }
-};
-
-(() => {
-    window.C = (function recurse(obj, context) {
-        let result = {};
-        for (let prop of _props(obj)) {
-            if (obj === chrome && prop === 'clipboard')
-                continue;
-            let value = obj[prop];
-            if (typeof value === 'object') {
-                result[prop] = recurse(value, obj);
-            } else if (typeof value === 'function') {
-                result[prop] = promisify(value, context);
-            }
-        }
-        return result;
-    })(chrome, null);
-})();
-
 const cycleTab = (conn, offset) => {
     C.tabs.query({windowId: conn.windowId}).then(tabs => {
         let index = conn.tab.index + offset;
@@ -42,7 +16,7 @@ const moveTab = (conn, n) => {
     });
 };
 
-ActionHandler.actions = {
+const Tabs = {
     nextTab(conn, repeats) {
         return cycleTab(conn, repeats);
     },

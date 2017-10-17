@@ -109,7 +109,7 @@ let Hints = {
 
             hints.push(hint);
         });
-        let codes = this.hintCodes('asdfgqwerzxcv', hints.length);
+        let codes = this.hintCodes(this.hintCharacters, hints.length);
         hints.forEach((hint, i) => {
             hint.code = codes[i];
             hint.hintElem = this.createHintElem(hint);
@@ -121,9 +121,11 @@ let Hints = {
     exitMode() {
         this.hints = [];
         this.hintContainer.remove();
+        this.hintCharacters = undefined;
     },
     listener(key, event) {
         event.stopPropagation();
+        event.preventDefault();
         let remove = [];
         let picked = null;
         Hints.hints.forEach((hint, index) => {
@@ -154,6 +156,14 @@ let Hints = {
     },
 
     showHints() {
+        if (!this.hintCharacters) {
+            BG('Settings.get', {key: 'hintCharacters'}, hintCharacters => {
+                log(`Got Hint characters: ${hintCharacters}`);
+                this.hintCharacters = hintCharacters;
+                this.showHints();
+            });
+            return;
+        }
         Mode.enterMode('hint');
         let hintContainer = this.createHintContainer();
         document.body.appendChild(hintContainer);
@@ -169,3 +179,5 @@ let Hints = {
         }
     },
 };
+
+Mode.addMode('hint', Hints);
