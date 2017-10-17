@@ -19,6 +19,11 @@ const bindings = {
     'gg': 'Scroll.top',
     'G': 'Scroll.bottom',
 
+    'S': 'History.goBack',
+    'D': 'History.goForward',
+    'H': 'History.goBack',
+    'L': 'History.goForward',
+
     'f': 'Hints.showHints',
 
     '<C-[>': 'Mode.exitMode',

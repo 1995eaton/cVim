@@ -28,8 +28,11 @@
     "scripts": [
       "shared_scripts/utils.js",
       "shared_scripts/dom.js",
+
       "background_scripts/settings.js",
+
       "background_scripts/tabs.js",
+
       "background_scripts/keyboard_handler.js",
       "background_scripts/runtime.js"
     ]
@@ -42,8 +45,10 @@
         "shared_scripts/dom.js",
 
         "content_scripts/mode.js",
+
         "content_scripts/scroll.js",
         "content_scripts/hints.js",
+        "content_scripts/history.js",
 
         "content_scripts/action_handler.js",
         "content_scripts/keyboard.js",
