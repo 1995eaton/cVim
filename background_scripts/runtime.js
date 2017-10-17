@@ -61,6 +61,34 @@ const Routes = {
     Settings,
 };
 
+chrome.tabs.onActivated.addListener((tabId, changeInfo, tab) => {
+    console.log(tabId, changeInfo, tab);
+});
+
+// reinitializes content-scripts after chrome.runtime.reload() is called
+chrome.runtime.onInstalled.addListener(details => {
+    log(details);
+    const manifest = chrome.runtime.getManifest();
+    const contentScripts = manifest.content_scripts[0];
+    const checkError = function() { if (chrome.runtime.lastError) return false; };
+    C.tabs.query({status: 'complete'}).then(tabs => {
+        tabs.forEach(tab => {
+            contentScripts.js.forEach(file => {
+                chrome.tabs.executeScript(tab.id, {
+                    file: file,
+                    allFrames: contentScripts.all_fames
+                }, checkError);
+            });
+            contentScripts.css.forEach(file => {
+                chrome.tabs.insertCSS(tab.id, {
+                    file: file,
+                    allFrames: contentScripts.all_fames
+                }, checkError);
+            });
+        });
+    });
+});
+
 chrome.extension.onConnect.addListener(port => {
     let messenger = new PortMessenger(port);
     connection.add(port, messenger);

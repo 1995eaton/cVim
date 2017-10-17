@@ -1,10 +1,12 @@
 const port = chrome.extension.connect({name: ''});
-port.onDisconnect.addListener(() => listener.deactivate());
+port.onDisconnect.addListener(() => {
+    Mode.exitMode();
+    listener.deactivate();
+});
 
 let messenger = new PortMessenger(port);
 
 messenger.onMessage((message) => {
-    log(message);
     switch (message.name) {
     case 'bindings':
         addBindings(message.bindings);
